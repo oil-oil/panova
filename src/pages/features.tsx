@@ -2,12 +2,6 @@ import dynamic from "next/dynamic";
 import React from "react";
 const FeatureTree = dynamic(() => import("@/components/feature-tree/FeatureTree").then((m) => m.FeatureTree), { ssr: false });
 
-export default function Home() {
-  return (
-    <div className="min-h-screen w-full px-4 py-6">
-      <div className="mx-auto max-w-4xl">
-        <FeatureTree />
-      </div>
-    </div>
-  );
+export default function FeaturesPage() {
+  return <FeatureTree />;
 }
