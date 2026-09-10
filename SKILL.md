@@ -1,12 +1,6 @@
 ---
 name: panova
-description: >
-  Analyze a codebase or PRD from a product manager's perspective and generate an interactive business anatomy report.
-  Use this skill proactively whenever someone wants to understand what a product does, how it works, or what happens if something changes —
-  even if they don't use the word "分析". Triggers include: "分析产品", "产品拆解", "业务梳理", "panova", "帮我理解这个产品",
-  "产品架构分析", "这个项目是干什么的", "帮我梳理一下业务", "新人入职想了解", "这个系统怎么用", "帮我看看这个代码库",
-  "business analysis", "product anatomy", "explain this product", "what does this system do".
-  Also trigger when a PM or non-technical person asks about business logic, user flows, or impact analysis of a codebase.
+description: "从代码库或 PRD 提取用户旅程、业务规则、实体关系和变更影响，生成面向产品经理与新成员的交互式业务报告。用户要求产品拆解、业务梳理、产品全貌或业务影响分析时使用。不用于普通代码修改、局部调试、代码质量评审或无需报告的简短概念问答。"
 ---
 
 # Panova — 产品业务拆解
@@ -25,7 +19,7 @@ description: >
 >
 > 如果你只想看某个模块（比如"只看支付"），或者有 PRD 文档想让我读，告诉我就行。否则我直接开始。
 
-等用户回复后再开始。如果用户说"开始"、"好的"或类似表述，直接用当前工作目录做全量分析。
+当前请求已明确来源和范围时直接开始，只在缺失信息会改变分析结果时询问。没有指定目录时先检查当前工作区是否确为目标项目，不扫描无关个人目录。
 
 ---
 
@@ -58,7 +52,7 @@ description: >
 
 ### 阶段 2：写报告
 
-读完 `~/.claude/skills/panova/BLOCKS.md` 了解可用的块语法，然后用扩展 Markdown 格式写报告。
+读完 `<当前 Skill 绝对目录>/BLOCKS.md` 了解可用的块语法，然后用扩展 Markdown 格式写报告。
 
 **核心原则：跟着用户走，不要按系统分类。**
 
@@ -104,7 +98,7 @@ description: >
 **为什么要分批：** 单次生成超长内容容易触发超时或中途截断，分批写入可以确保每段内容都安全落盘，即使中途出错也不会丢失已完成的部分。
 
 **第二步：调用构建脚本生成 HTML**
-- 运行：`bash ~/.claude/skills/panova/build.sh ./panova-report.md ./panova-report.html`
+- 运行：`bash <当前 Skill 绝对目录>/build.sh ./panova-report.md ./panova-report.html`
 - 脚本会自动验证生成的 HTML（JS 语法检查、危险模式扫描）
 - **如果构建失败：** 看错误信息。常见问题：markdown 中包含未转义的反引号或 `${`，demo 块中包含 `</script>`。修正 markdown 后重新构建
 - **注意：** 生成的报告需要联网才能正常显示（依赖 CDN 加载 markdown-it 和 mermaid）
@@ -142,7 +136,7 @@ h1 用 `产品名 — 一句话定位` 格式（如 `Wolfcha — AI 狼人杀`�
 - 用"你"称呼读者，像在跟同事口头讲解
 - 每句话只说一件事
 - 减少形容词，直接说是什么、做什么
-- 技术概念翻译成业务语言。"存储在 Redis" → "临时缓存，重启会清空"
+- 技术概念翻译成业务语言。"存储在 Redis" → "数据保存在缓存服务中；是否持久化和重启后恢复，以项目配置为准"
 - 技术细节用 `:::tooltip` 补充，不混在正文里
 
 ### 概念怎么写
@@ -196,7 +190,7 @@ h1 用 `产品名 — 一句话定位` 格式（如 `Wolfcha — AI 狼人杀`�
 
 ## 块语法参考
 
-所有可用的扩展 Markdown 块语法定义在 `~/.claude/skills/panova/BLOCKS.md`。写报告前先读一遍。
+所有可用的扩展 Markdown 块语法定义在 `<当前 Skill 绝对目录>/BLOCKS.md`。写报告前先读一遍。
 
 ---
 
